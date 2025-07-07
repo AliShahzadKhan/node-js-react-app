@@ -1,14 +1,31 @@
 pipeline {
     agent any 
     
+    environment {
+        NODE_ENV = 'development'
+    }
+
     tools {
         nodejs 'NodeJs 18'
     }
 
     stages {
+        stages ('Checkout') {
+            steps {
+                git 'https://github.com/AliShahzadKhan/node-js-react-app.git'
+            }
+        }
+
+        stage ('Install Dependencies') {
+            steps {
+                sh 'npm ci'
+            }
+        }
+
         stage ('Build') {
             steps {
                 echo 'Building the app...'
+                sh 'npm test'
             }
         }
 
@@ -22,6 +39,15 @@ pipeline {
             steps {
                 echo 'Deploying the app...'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build was successful!'
+        }
+        failure {
+            echo 'Build failed!'
         }
     }
 }
