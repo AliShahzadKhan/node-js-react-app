@@ -10,7 +10,7 @@ pipeline {
     }
 
     stages {
-        stages ('Checkout') {
+        stage ('Checkout') {
             steps {
                 git 'https://github.com/AliShahzadKhan/node-js-react-app.git'
             }
